@@ -1,0 +1,64 @@
+Claude Design skill for openclaude
+==================================
+
+This bundled skill ships content adapted from two upstream sources:
+
+1. The Claude Design master system prompt — released by Anthropic Labs
+   on 2026-04-17 with the Claude Design product (claude.ai/design).
+   Adapted to remove proprietary tool references and rewire the
+   workflow onto openclaude's native tools.
+
+2. Open Design (https://github.com/nexu-io/open-design) — an Apache-2.0
+   open-source replica of Claude Design. We vendor:
+
+   - The skills/<name>/SKILL.md prompt bodies as references/skills/*.md
+     (113 named workflows: web-prototype, wireframe-sketch, tweaks,
+     html-ppt, simple-deck, dashboard, saas-landing, mobile-app,
+     pricing-page, pm-spec, weekly-update, sprite-animation,
+     video-shortform, hyperframes, dating-web, gamified-app, and many
+     more).
+
+   - The craft/*.md design-discipline guidelines as references/craft/*.md
+     (12 docs: anti-ai-slop, accessibility-baseline, animation-discipline,
+     color, form-validation, laws-of-ux, rtl-and-bidi, state-coverage,
+     typography-hierarchy, typography-hierarchy-editorial, typography).
+
+   - A representative subset of design-systems/<name>/DESIGN.md files
+     as references/design-systems/*.md (~15 brand systems).
+
+   - The skills/html-ppt/assets/themes/*.css theme overrides and
+     skills/html-ppt/templates/single-page/*.html slide templates and
+     skills/html-ppt/references/*.md authoring docs as
+     references/html-ppt/themes|templates|refs/*.
+
+License: Apache 2.0 (Open Design); the Claude Design master prompt is
+adapted under fair use for interoperability and is rewritten to refer
+to openclaude's native tools.
+
+Vendor source: https://github.com/nexu-io/open-design
+Last vendored: see scripts/build-claude-design-skill.ts at HEAD.
+
+============================================================================
+
+                              Apache License
+                        Version 2.0, January 2004
+                     http://www.apache.org/licenses/
+
+   Licensed under the Apache License, Version 2.0 (the "License"); you may
+   not use this file except in compliance with the License. You may obtain
+   a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+   implied. See the License for the specific language governing
+   permissions and limitations under the License.
+
+============================================================================
+
+Copyright notice for vendored Open Design content:
+
+Copyright 2026 nexu-io contributors and the Open Design community.
+Licensed under the Apache License, Version 2.0.
