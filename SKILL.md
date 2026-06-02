@@ -94,22 +94,13 @@ read them once before starting any non-trivial design work.
 ## Your toolset (Claude Code native tools)
 
 You drive everything through the host's native tools — there is no
-proprietary `write_file` / `show_html` / `gen_pptx` / `fork_verifier_agent`
-layer here. The mapping:
-
-| What Claude Design calls it | What you actually use |
-|---|---|
-| `read_file` / `list_files` / `grep` | `Read` / `Glob` / `Grep` |
-| `write_file` / `str_replace_edit` / `copy_files` / `delete_file` | `Write` / `Edit` / `Bash(cp:*, mv:*, rm:*)` |
-| `view_image` | `Read` (passes images natively to multimodal models) |
-| `web_search` / `web_fetch` | `WebSearch` / `WebFetch` |
-| `done` / `show_to_user` | Tell the user the file path and let them open it. |
-| `save_screenshot` / `multi_screenshot` / `eval_js_user_view` | None native. Spawn `google-chrome --headless=new --screenshot=...` via `Bash` — **but `--window-size` lies about the viewport, so render compensated and crop with PIL.** Full pipeline + diagnostic overlay in `references/craft/headless-rendering.md`. Playwright / Puppeteer work too if installed. Last-resort fallback: ask the user to paste a screenshot. |
-| `gen_pptx` / `super_inline_html` / `open_for_print` | None native. Output PPTX via `python-pptx` / `pptxgenjs` through `Bash`; emit self-contained HTML by inlining your assets at write time; tell the user to print to PDF from their browser. |
-| `fork_verifier_agent` | Spawn a `Task` subagent for an independent review pass. |
-| `invoke_skill` | Read the relevant `references/skills/<name>.md` from this skill's directory. |
-| `update_todos` | `TodoWrite`. |
-| `questions_v2` | `AskUserQuestion` (1–4 structured options per question). |
+proprietary `write_file` / `gen_pptx` / `fork_verifier_agent` layer here.
+Key mappings: file I/O → `Read`/`Glob`/`Grep`/`Write`/`Edit`; `view_image`
+→ `Read`; `questions_v2` → `AskUserQuestion`; `fork_verifier_agent` → a
+`Task` subagent; `invoke_skill` → read `references/skills/<name>.md`;
+`save_screenshot` → headless Chrome (see `references/craft/headless-rendering.md`).
+**When the master prompt below names any proprietary tool, read
+`references/authoring/toolset-mapping.md`** for the full table.
 
 ## Workflow
 
@@ -214,103 +205,26 @@ data-attribute id. Use it to locate the source-code element to edit.
 If unsure how to generalize the edit, ask. Don't guess-and-edit on a
 nontrivial change.
 
-## React + Babel inline JSX
+## Technique references (read on demand)
 
-```html
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-```
+Read the matching file under `references/authoring/` **only when the brief
+calls for that technique** — keep the detail out of context until needed:
 
-See **Gotchas** above for the style-object name-collision rule and the
-`window` re-export pattern for sharing components across Babel files.
-
-## Animations & video-style HTML artifacts
-
-For timeline-driven animation (sprite scenes, scrubber, play/pause),
-read `references/skills/video-hyperframes.md` and the `frame-*.md`
-recipes (`frame-glitch-title`, `frame-light-leak-cinema`,
-`frame-liquid-bg-hero`, `frame-logo-outro`, …) for the
-keyframe/transport pattern; for programmatic React-driven motion or
-exported video, see `references/skills/remotion.md`; for
-library-grade choreography (timelines, ScrollTrigger, easing,
-`interpolate()`) see the `gsap-*.md` family (`gsap-core`,
-`gsap-timeline`, `gsap-scrolltrigger`, `gsap-utils`, …). For interactive
-prototypes, plain CSS transitions or React state are sufficient — don't
-reach for a heavier animation library unless those genuinely can't cover it.
-
-**Resist the urge to add a TITLE screen** to actual HTML pages.
-Centered/responsively-sized within the viewport beats a chrome-eating
-splash.
-
-## Slide decks
-
-Use `references/html-ppt/runtime.js` — a `<deck-stage>` web component
-that handles scaling, keyboard / tap navigation, slide counter overlay,
-`localStorage` slide-position persistence, and print-to-PDF. Each slide
-is a direct child `<section>` of `<deck-stage>`.
-
-For decks and multi-screen prototypes, add `data-screen-label="01
-Title"`, `data-screen-label="02 Agenda"`, etc. on each slide / screen
-root. **Slide numbers are 1-indexed** (see Gotchas).
-
-**Speaker notes** — only add when the user explicitly asks. With speaker
-notes you can put less text on slides and lean on impactful visuals.
-Format:
-
-```html
-<script type="application/json" id="speaker-notes">
-[
-  "Slide 1 notes — full conversational script",
-  "Slide 2 notes",
-  ...
-]
-</script>
-```
-
-The deck shell wires up `window.postMessage({slideIndexChanged: N})`
-on init and on every change, so an external presenter mode (in another
-window, frame, or tab) can sync.
-
-## Tweaks protocol (live in-design controls)
-
-When the user asks for "variants", "tweak this", "live controls",
-"adjust on the fly", build a side panel — typically a fixed pill in
-the bottom-right — that drives CSS custom properties at runtime and
-persists to `localStorage`. Defaults wrapped in markers:
-
-```js
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "primaryColor": "#D97757",
-  "fontSize": 16,
-  "dark": false
-}/*EDITMODE-END*/;
-```
-
-The block between the markers must be valid JSON (double-quoted keys
-and strings). The 5 standard knobs are `--accent`, `--scale`,
-`--density`, `--mode`, and `--motion`; a sibling `wrap.html` reads the
-EDITMODE JSON and re-applies the CSS variables live. For applying
-ready-made font/color theme presets to an artifact, see
-`references/skills/theme-factory.md`.
-
-**Three knobs is the sweet spot.** Five clutters; one isn't worth a
-panel. Hide the panel when toggled off — design should look final by
-default.
-
-## Calling Claude from HTML artifacts
-
-```html
-<script>
-(async () => {
-  const text = await window.claude.complete("Summarize this: ...");
-})();
-</script>
-```
-
-Works in hosts that wire the bridge in. In a plain browser it won't —
-fall back to a fetch against a user-supplied OpenAI-compatible endpoint,
-or skip the dynamic copy.
+- **`references/authoring/react-babel.md`** — pinned React + Babel CDN
+  tags (with SRI) for in-browser JSX prototypes. Read when building a
+  React/JSX artifact.
+- **`references/authoring/animations.md`** — timeline / sprite / video-style
+  animation patterns and which skill recipe to reach for. Read when the
+  brief is an animation or motion piece.
+- **`references/authoring/slide-decks.md`** — the `<deck-stage>` runtime,
+  `data-screen-label`, speaker notes, and presenter-mode sync. Read when
+  building a slide deck or multi-screen prototype.
+- **`references/authoring/tweaks-protocol.md`** — the EDITMODE live-controls
+  panel (5 standard knobs + `wrap.html` bridge). Read when the user wants
+  "variants", "tweak this", "live controls".
+- **`references/authoring/calling-claude.md`** — the `window.claude.complete`
+  bridge and plain-browser fallback. Read when an artifact needs dynamic
+  LLM-generated copy at runtime.
 
 ## Asking questions (questions_v2 → AskUserQuestion)
 
@@ -347,21 +261,16 @@ brief, not preemptively:
   `paywall-upgrade-cro`, and 100+ more). Index:
   `references/skills/_INDEX.md`.
 - **`references/craft/anti-ai-slop.md`** — Always skim before shipping.
-  Other craft docs (`accessibility-baseline.md`,
-  `animation-discipline.md`, `color.md`, `form-validation.md`,
-  `laws-of-ux.md`, `rtl-and-bidi.md`, `state-coverage.md`,
-  `typography-hierarchy.md`) — Read when the topic surfaces.
-  **`headless-rendering.md`** — Read whenever you're going to render
-  an HTML artifact to a fixed-pixel PNG (Discord card, OG image,
-  social share). Covers the Chromium viewport-compensation bug,
-  diagnostic overlays, and the render-then-crop pipeline.
+  The other 11 craft docs (accessibility, animation discipline, color,
+  form validation, laws of UX, RTL/bidi, state coverage, typography) —
+  read when the topic surfaces. **`headless-rendering.md`** — read
+  whenever you'll render an HTML artifact to a fixed-pixel PNG (Discord
+  card, OG image, social share); covers the Chromium
+  viewport-compensation bug and the render-then-crop pipeline.
 - **`references/design-systems/<vibe>.md`** — Read when the user has no
-  brand to anchor on. ~27 representative systems (apple, stripe, figma,
-  vercel, notion, linear-app, github, openai, framer, raycast, claude,
-  supabase, airbnb, shopify, atelier-zero, warm-editorial, brutalism,
-  neobrutalism, bento, minimal, neumorphism, glassmorphism, retro,
-  editorial, modern, paper, default). Index:
-  `references/design-systems/_INDEX.md`.
+  brand to anchor on. 27 representative systems (brand-grade like apple /
+  stripe / linear-app / vercel, plus aesthetic schools like brutalism /
+  glassmorphism / editorial). Index: `references/design-systems/_INDEX.md`.
 - **`references/html-ppt/`** — Read when building slide decks:
   - `runtime.js` — the `<deck-stage>` web component.
   - `themes/<name>.css` — 36 `:root` token overrides.
@@ -394,37 +303,26 @@ full) to ground the mock in real references before building.
 
 **Workflow:**
 
-1. **Pull references first.** Read `references/game-ui/SKILL.md` in full —
-   it drives gameuidatabase.com (1,790+ games / 72,000+ UI screenshots).
-   Obey its **two-channel rule**: discover/search metadata with the
-   browser (`mcp__browser__*`, Cloudflare-challenged), then `curl` the
-   full-res `/uploads/**.jpg` screenshots to `/tmp/guidb/<slug>/` and
-   `Read` them so you can actually *see* the reference UI. Never `curl`
-   an HTML page; never round-trip images through the browser.
-   - Setup (once/session): start Xvfb on `:99`, then
-     `start_browser(headless=false, low_memory=false)` — headed is
-     mandatory (headless gets Cloudflare-blocked), and the stealth flags
-     matter. Navigate to `index.php` and `wait` for the challenge to clear.
-   - The `game-ui/scripts/` (`search.js`, `extract-grid.js`,
-     `extract-game.js`, `inspector.js`, `fetch-images.sh`) automate
-     search → tile-parse → image-fetch.
-     `game-ui/references/{api-map,selectors,tags}.md` are the
-     endpoint/data-model/filter-vocabulary contracts.
-   - Search by game, by UI-element category (HUD, inventory, menu…), by
-     genre/theme/art-style, by on-screen text (OCR), or by colour.
-2. **Study the references** — note layout grammar (corner-anchored HUD
-   clusters, diegetic vs. non-diegetic framing), the type/iconography
-   system, state feedback (cooldowns, damage, resource bars), and the
-   art-style's texture/bevel/glow language.
-3. **Build the mock as a self-contained HTML artifact** — same rules as
-   the rest of this skill. Game UIs lean on absolute positioning over a
-   backdrop, bitmap/────display fonts, layered panels with custom
-   borders, and animated state (use the `frame-*` / `gsap-*` / `remotion`
-   recipes for motion). Pull a `references/design-systems/` vibe only if
-   the user has no art direction; otherwise derive tokens from the
-   reference screenshots.
-4. **Render-check** with `references/craft/headless-rendering.md` when the
-   deliverable is a fixed-resolution PNG (e.g. a 1080p HUD comp).
+1. **Pull references first.** Read `references/game-ui/SKILL.md` in full
+   and follow it — it drives gameuidatabase.com (1,790+ games / 72,000+
+   screenshots) and owns the mechanics: the two-channel rule (browser for
+   Cloudflare-gated metadata, `curl` for `/uploads/**.jpg` images), the
+   once-per-session Xvfb + headed-browser setup, and the
+   `search`/`extract`/`inspector`/`fetch` scripts. Search by game, UI
+   element, genre/art-style, on-screen text, or colour; download to
+   `/tmp/guidb/<slug>/` and `Read` the images so you actually *see* them.
+2. **Study the references** — layout grammar (corner-anchored HUD
+   clusters, diegetic vs. non-diegetic framing), type/iconography, state
+   feedback (cooldowns, damage, resource bars), and the art-style's
+   texture/bevel/glow language.
+3. **Build the mock as a self-contained HTML artifact** — game UIs lean on
+   absolute positioning over a backdrop, bitmap/display fonts, layered
+   panels with custom borders, and animated state (see
+   `references/authoring/animations.md`). Derive tokens from the reference
+   screenshots; fall back to a `references/design-systems/` vibe only if
+   the user has no art direction.
+4. **Render-check** with `references/craft/headless-rendering.md` for a
+   fixed-resolution PNG (e.g. a 1080p HUD comp).
 
 Don't import web tropes (top nav bars, card grids, hamburger menus) into
 a game UI unless the reference material actually uses them.
@@ -466,7 +364,6 @@ metrics, lorem ipsum filler), read `references/craft/anti-ai-slop.md`.
 
 ## Project artifacts persist across sessions
 
-Files you write are real files in the user's working directory. They
-survive across sessions. `git status` / `git diff` see them. Don't
-treat the artifact as ephemeral — name it, version it, write a short
-commit-style description in your end-of-turn summary.
+Files you write are real files in the user's working directory — they
+survive across sessions and `git` sees them. Don't treat the artifact as
+ephemeral: name it, version it, and describe it in your end-of-turn summary.
