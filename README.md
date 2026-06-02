@@ -8,7 +8,7 @@ Claude Code and want the same workflow.
 Anthropic Labs released **Claude Design** ([claude.ai/design](https://claude.ai/design))
 on 2026-04-17 — a vision-model-driven HTML design tool that turns a brief
 into polished visual work (slides, prototypes, mockups, landing pages,
-animations, decks). The hosted product ships with proprietary tools
+animations, decks, game UIs). The hosted product ships with proprietary tools
 (sandboxed iframe preview, `gen_pptx`, `fork_verifier_agent`, `invoke_skill`,
 `questions_v2`). This skill ports the same workflow on top of Claude Code's
 native tools, so the model produces the same kinds of artifacts in your
@@ -32,12 +32,14 @@ Apache 2.0, plus an integrated game-UI reference pipeline:
   `pixelbin-media`, `nanobanana-ppt`, `gif-sticker-maker`,
   `ai-music-album`) are excluded — they need vendor keys and don't map to
   Claude Code's native tools. `_INDEX.md` lists all.
-- **13 craft / discipline docs** under `references/craft/` — `anti-ai-slop.md`
-  (the seven cardinal sins), `accessibility-baseline.md`,
-  `animation-discipline.md`, `color.md`, `form-validation.md`,
-  `laws-of-ux.md`, `rtl-and-bidi.md`, `state-coverage.md`,
-  `typography-hierarchy.md`, etc. Includes `headless-rendering.md`
-  (skill-local: the Chromium render-then-crop pipeline).
+- **12 design-discipline docs** under `references/craft/` (+ a `README.md`
+  index) — `anti-ai-slop.md` (the seven cardinal sins),
+  `accessibility-baseline.md`, `animation-discipline.md`, `color.md`,
+  `form-validation.md`, `laws-of-ux.md`, `rtl-and-bidi.md`,
+  `state-coverage.md`, `typography-hierarchy.md`,
+  `typography-hierarchy-editorial.md`, `typography.md`, and
+  `headless-rendering.md` (skill-local: the Chromium render-then-crop
+  pipeline).
 - **27 brand-grade design systems** under `references/design-systems/` —
   `apple`, `stripe`, `figma`, `vercel`, `notion`, `linear-app`, `github`,
   `openai`, `framer`, `raycast`, `claude`, `supabase`, `airbnb`, `shopify`,
@@ -61,20 +63,17 @@ Apache 2.0, plus an integrated game-UI reference pipeline:
 
 ## Install
 
-```bash
-mkdir -p ~/.claude/skills
-git clone --depth 1 --filter=blob:none --sparse https://github.com/coffeegrind123/openclaude.git /tmp/openclaude-skill
-cd /tmp/openclaude-skill && git sparse-checkout set contrib/claude-design
-mv /tmp/openclaude-skill/contrib/claude-design ~/.claude/skills/claude-design
-rm -rf /tmp/openclaude-skill
-```
-
-Or, if you've already cloned `coffeegrind123/openclaude`:
+Clone this repo straight into your skills directory (its `SKILL.md` lives at
+the repo root, so it installs as a skill directly):
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -r contrib/claude-design ~/.claude/skills/claude-design
+git clone --depth 1 https://github.com/coffeegrind123/claude-design-skill.git ~/.claude/skills/claude-design
 ```
+
+To update later, `git -C ~/.claude/skills/claude-design pull`. If you prefer not
+to keep the `.git` directory, download a tarball and extract it to the same path
+instead.
 
 Restart your Claude Code session. The skill should appear in `/skills`.
 
@@ -89,6 +88,7 @@ build a 12-slide pitch deck for our seed round, editorial-serif theme
 create 5 interactive shader wallpapers that react to mouse position
 wireframe an admin dashboard, sidebar + dense layout
 make this landing page tweakable — accent color, type scale, density
+mock a sci-fi RPG inventory HUD — pull references from gameuidatabase first
 ```
 
 Or invoke explicitly via `/skills`.
@@ -113,13 +113,19 @@ The model:
 - No `gen_pptx` / `super_inline_html` / `open_for_print`. For PPTX export
   the model shells out to `python-pptx` / `pptxgenjs` via `Bash`. For
   self-contained single-file HTML the model inlines assets at write time.
-- No `save_screenshot` / `eval_js_user_view`. If a render check is
-  genuinely needed, the model asks you for a screenshot or spawns headless
-  Chrome / Puppeteer / Playwright via `Bash`.
+- No `save_screenshot` / `eval_js_user_view`. For a fixed-pixel render the
+  model follows `references/craft/headless-rendering.md` (headless Chrome /
+  Puppeteer / Playwright with the viewport-compensation + crop pipeline), or
+  asks you for a screenshot.
 - No `fork_verifier_agent` — the model spawns a regular `Task` subagent
   for an independent review pass.
 - No `invoke_skill` recursion — the model reads `references/skills/<name>.md`
   directly when a sub-workflow matches.
+- The **game-UI reference pipeline** (`references/game-ui/`) drives the
+  Cloudflare-gated gameuidatabase.com, so it needs a real browser (the
+  `browser` MCP server) plus `Xvfb` and `curl`/`wget` — included in the
+  skill's `allowed-tools`. Without a browser MCP server configured, the
+  build/mock steps still work; only the reference-pulling step is unavailable.
 
 ## Refreshing against upstream
 
