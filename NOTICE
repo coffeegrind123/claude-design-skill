@@ -1,22 +1,25 @@
 Claude Design skill for openclaude
 ==================================
 
-This bundled skill ships content adapted from two upstream sources:
+This bundled skill ships content adapted from several upstream sources:
 
 1. The Claude Design master system prompt — released by Anthropic Labs
    on 2026-04-17 with the Claude Design product (claude.ai/design).
    Adapted to remove proprietary tool references and rewire the
-   workflow onto openclaude's native tools.
+   workflow onto Claude Code's native tools.
 
 2. Open Design (https://github.com/nexu-io/open-design) — an Apache-2.0
    open-source replica of Claude Design. We vendor:
 
    - The skills/<name>/SKILL.md prompt bodies as references/skills/*.md
-     (113 named workflows: web-prototype, wireframe-sketch, tweaks,
-     html-ppt, simple-deck, dashboard, saas-landing, mobile-app,
-     pricing-page, pm-spec, weekly-update, sprite-animation,
-     video-shortform, hyperframes, dating-web, gamified-app, and many
-     more).
+     (111 named workflows: frontend-design, web-artifacts-builder,
+     login-flow, resume-modern, data-report, poster-hero,
+     brand-guidelines, the deck-* / slides / ppt-keynote family,
+     remotion, threejs, shader-dev, d3-visualization, shadcn-ui, the
+     gsap-* and frame-* families, figma-*, and many more). External
+     paid-API generative-media skills (fal-*, venice-*, replicate,
+     minimax-*, imagen, imagegen, sora, speech, pixelbin-media,
+     nanobanana-ppt, gif-sticker-maker, ai-music-album) are excluded.
 
    - The craft/*.md design-discipline guidelines as references/craft/*.md
      (12 docs: anti-ai-slop, accessibility-baseline, animation-discipline,
@@ -24,19 +27,31 @@ This bundled skill ships content adapted from two upstream sources:
      typography-hierarchy, typography-hierarchy-editorial, typography).
 
    - A representative subset of design-systems/<name>/DESIGN.md files
-     as references/design-systems/*.md (~15 brand systems).
+     as references/design-systems/*.md (27 brand systems).
 
-   - The skills/html-ppt/assets/themes/*.css theme overrides and
-     skills/html-ppt/templates/single-page/*.html slide templates and
-     skills/html-ppt/references/*.md authoring docs as
-     references/html-ppt/themes|templates|refs/*.
+   - The design-templates/html-ppt/assets/themes/*.css theme overrides,
+     design-templates/html-ppt/templates/single-page/*.html slide
+     templates, and design-templates/html-ppt/references/*.md authoring
+     docs as references/html-ppt/themes|templates|refs/*, plus
+     design-templates/html-ppt/assets/runtime.js.
 
-License: Apache 2.0 (Open Design); the Claude Design master prompt is
-adapted under fair use for interoperability and is rewritten to refer
-to openclaude's native tools.
+3. design.md (https://github.com/google-labs-code/design.md) — Apache-2.0.
+   We vendor docs/spec.md and the canonical examples/ (atmospheric-glass,
+   paws-and-paths, totality-festival) as references/design-md/, plus a
+   hand-authored cli.md cheat-sheet for the `npx @google/design.md` CLI.
 
-Vendor source: https://github.com/nexu-io/open-design
-Last vendored: see scripts/build-claude-design-skill.ts at HEAD.
+4. gameuidatabase skill (coffeegrind123/claude-sbox-setup ecosystem) —
+   integrated in full as references/game-ui/ for building and mocking
+   game UIs. Drives gameuidatabase.com (Edd Coates' archive); the site
+   itself is third-party and not redistributed here.
+
+License: Apache 2.0 (Open Design and design.md). The Claude Design master
+prompt is adapted under fair use for interoperability and rewritten to
+refer to Claude Code's native tools.
+
+Vendor sources: https://github.com/nexu-io/open-design and
+https://github.com/google-labs-code/design.md
+Last re-vendored with scripts/vendor.ts (standalone re-vendor script).
 
 ============================================================================
 

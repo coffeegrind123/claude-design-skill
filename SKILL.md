@@ -1,6 +1,6 @@
 ---
 name: claude-design
-description: Anthropic Labs Claude Design as a markdown-only skill — produce polished visual work (designs, prototypes, slides, one-pagers, animations, shaders, decks, marketing collateral) by writing self-contained HTML artifacts. You are an expert designer working with the user as a manager. HTML is your tool; the medium varies — a slide deck is not a webpage, an animation is not a webpage, a mobile mockup is not a webpage. Bundles 113 named workflow recipes, 12 design-discipline docs, 27 brand-grade design systems, 36 deck themes, 31 slide layouts, and the deck-stage runtime — all vendored from nexu-io/open-design under Apache 2.0.
+description: Anthropic Labs Claude Design as a markdown-only skill — produce polished visual work (designs, prototypes, slides, one-pagers, animations, shaders, decks, marketing collateral, game UIs) by writing self-contained HTML artifacts. You are an expert designer working with the user as a manager. HTML is your tool; the medium varies — a slide deck is not a webpage, an animation is not a webpage, a mobile mockup is not a webpage, a game HUD is not a webpage. Bundles 111 named workflow recipes, 13 design-discipline docs, 27 brand-grade design systems, 36 deck themes, 31 slide layouts, the deck-stage runtime, the google-labs-code/design.md format spec + canonical examples, and an integrated game-UI reference pipeline (gameuidatabase.com) for building/mocking game interfaces — vendored from nexu-io/open-design and google-labs-code/design.md under Apache 2.0.
 when_to_use: |
   Use when the user wants to design, prototype, mock up, sketch,
   wireframe, build a deck, build slides, build a landing page or
@@ -18,8 +18,9 @@ when_to_use: |
   a deck", "slides", "presentation", "landing page", "one-pager",
   "marketing site", "pitch deck", "interactive demo", "animation",
   "shader", "iridescent", "particle effect", "loader", "onboarding
-  flow", "design system", "tweakable", "live controls".
-allowed-tools: Read, Write, Edit, Glob, Grep, WebFetch, WebSearch, Task, AskUserQuestion, TodoWrite, Bash(cp:*), Bash(mv:*), Bash(rm:*), Bash(mkdir:*), Bash(ls:*), Bash(chromium:*), Bash(google-chrome:*), Bash(playwright:*), Bash(puppeteer:*), Bash(python:*), Bash(python3:*), Bash(node:*), Bash(npx:*), Bash(pip:*), Bash(npm:*), Bash(git:*)
+  flow", "design system", "tweakable", "live controls", "game UI",
+  "game HUD", "inventory screen", "main menu", "game interface".
+allowed-tools: Read, Write, Edit, Glob, Grep, WebFetch, WebSearch, Task, AskUserQuestion, TodoWrite, mcp__browser__*, Bash(cp:*), Bash(mv:*), Bash(rm:*), Bash(mkdir:*), Bash(ls:*), Bash(chromium:*), Bash(google-chrome:*), Bash(playwright:*), Bash(puppeteer:*), Bash(python:*), Bash(python3:*), Bash(node:*), Bash(npx:*), Bash(pip:*), Bash(npm:*), Bash(git:*), Bash(bash:*), Bash(curl:*), Bash(wget:*), Bash(Xvfb:*), Bash(xdpyinfo:*), Bash(pgrep:*), Bash(jq:*), Bash(file:*), Bash(find:*), Bash(grep:*), Bash(sed:*), Bash(awk:*), Bash(cat:*), Bash(wc:*), Bash(head:*), Bash(tail:*), Bash(date:*)
 ---
 
 # Claude Design — Expert Designer
@@ -227,12 +228,16 @@ See **Gotchas** above for the style-object name-collision rule and the
 ## Animations & video-style HTML artifacts
 
 For timeline-driven animation (sprite scenes, scrubber, play/pause),
-read `references/skills/sprite-animation.md`, `motion-frames.md`, or
-`hyperframes.md` — they describe a `<Stage>` (auto-scale + scrubber +
-transport) + `<Sprite start end>` + `useTime()` / `useSprite()` hooks
-+ `Easing` + `interpolate()` pattern. For interactive prototypes, plain
-CSS transitions or React state are sufficient — don't reach for
-Popmotion or Framer Motion unless those genuinely can't cover it.
+read `references/skills/video-hyperframes.md` and the `frame-*.md`
+recipes (`frame-glitch-title`, `frame-light-leak-cinema`,
+`frame-liquid-bg-hero`, `frame-logo-outro`, …) for the
+keyframe/transport pattern; for programmatic React-driven motion or
+exported video, see `references/skills/remotion.md`; for
+library-grade choreography (timelines, ScrollTrigger, easing,
+`interpolate()`) see the `gsap-*.md` family (`gsap-core`,
+`gsap-timeline`, `gsap-scrolltrigger`, `gsap-utils`, …). For interactive
+prototypes, plain CSS transitions or React state are sufficient — don't
+reach for a heavier animation library unless those genuinely can't cover it.
 
 **Resist the urge to add a TITLE screen** to actual HTML pages.
 Centered/responsively-sized within the viewport beats a chrome-eating
@@ -283,9 +288,11 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 ```
 
 The block between the markers must be valid JSON (double-quoted keys
-and strings). Read `references/skills/tweaks.md` for the full pattern,
-the 5 standard knobs (`--accent`, `--scale`, `--density`, `--mode`,
-`--motion`), and the wrap.html bridge.
+and strings). The 5 standard knobs are `--accent`, `--scale`,
+`--density`, `--mode`, and `--motion`; a sibling `wrap.html` reads the
+EDITMODE JSON and re-applies the CSS variables live. For applying
+ready-made font/color theme presets to an artifact, see
+`references/skills/theme-factory.md`.
 
 **Three knobs is the sweet spot.** Five clutters; one isn't worth a
 panel. Hide the panel when toggled off — design should look final by
@@ -333,10 +340,12 @@ This skill ships hundreds of design-discipline references under
 brief, not preemptively:
 
 - **`references/skills/<name>.md`** — Read the matching recipe **first**
-  when the user's brief matches a named workflow (deck, web prototype,
-  wireframe, tweaks, dashboard, mobile-app, saas-landing, pricing-page,
-  pm-spec, weekly-update, sprite-animation, video-shortform, and 100+
-  more). Index: `references/skills/_INDEX.md`.
+  when the user's brief matches a named workflow (`frontend-design`,
+  `web-artifacts-builder`, `login-flow`, `resume-modern`, `data-report`,
+  `poster-hero`, `brand-guidelines`, `slides`/`ppt-keynote`/`deck-*`,
+  `remotion`, `threejs`, `shader-dev`, `d3-visualization`, `shadcn-ui`,
+  `paywall-upgrade-cro`, and 100+ more). Index:
+  `references/skills/_INDEX.md`.
 - **`references/craft/anti-ai-slop.md`** — Always skim before shipping.
   Other craft docs (`accessibility-baseline.md`,
   `animation-discipline.md`, `color.md`, `form-validation.md`,
@@ -360,6 +369,65 @@ brief, not preemptively:
   - `refs/themes.md`, `layouts.md`, `animations.md`,
     `presenter-mode.md`, `full-decks.md`, `authoring-guide.md` — deck
     library discipline docs.
+- **`references/design-md/`** — The google-labs-code/design.md format:
+  - `spec.md` — the full DESIGN.md format specification.
+  - `examples/<name>/` — canonical DESIGN.md + `design_tokens.json` +
+    `tailwind.config.js` triples (atmospheric-glass, paws-and-paths,
+    totality-festival).
+  - `cli.md` — the `npx @google/design.md` CLI (lint / diff / export /
+    spec). Use `lint` on a DESIGN.md before generating UI from it, and
+    `export --format css-tailwind` to emit Tailwind v4 `@theme` CSS.
+- **`references/game-ui/`** — Read when building or mocking **game UIs**
+  (HUDs, inventories, menus, settings, ability bars). It's the
+  `gameuidatabase` skill integrated in full: `game-ui/SKILL.md` is the
+  driver, `game-ui/references/api-map.md` the endpoint contract,
+  `game-ui/scripts/` the search/extract/fetch tooling. See the dedicated
+  section below.
+
+## Game UI — building & mocking game interfaces
+
+When the brief is a **game UI** (HUD, inventory, main menu, settings,
+ability/skill bar, dialogue box, loadout screen, map overlay), treat it
+as its own medium — a game HUD is not a webpage. Reach for the integrated
+`references/game-ui/` pipeline (the `gameuidatabase` skill, bundled in
+full) to ground the mock in real references before building.
+
+**Workflow:**
+
+1. **Pull references first.** Read `references/game-ui/SKILL.md` in full —
+   it drives gameuidatabase.com (1,790+ games / 72,000+ UI screenshots).
+   Obey its **two-channel rule**: discover/search metadata with the
+   browser (`mcp__browser__*`, Cloudflare-challenged), then `curl` the
+   full-res `/uploads/**.jpg` screenshots to `/tmp/guidb/<slug>/` and
+   `Read` them so you can actually *see* the reference UI. Never `curl`
+   an HTML page; never round-trip images through the browser.
+   - Setup (once/session): start Xvfb on `:99`, then
+     `start_browser(headless=false, low_memory=false)` — headed is
+     mandatory (headless gets Cloudflare-blocked), and the stealth flags
+     matter. Navigate to `index.php` and `wait` for the challenge to clear.
+   - The `game-ui/scripts/` (`search.js`, `extract-grid.js`,
+     `extract-game.js`, `inspector.js`, `fetch-images.sh`) automate
+     search → tile-parse → image-fetch.
+     `game-ui/references/{api-map,selectors,tags}.md` are the
+     endpoint/data-model/filter-vocabulary contracts.
+   - Search by game, by UI-element category (HUD, inventory, menu…), by
+     genre/theme/art-style, by on-screen text (OCR), or by colour.
+2. **Study the references** — note layout grammar (corner-anchored HUD
+   clusters, diegetic vs. non-diegetic framing), the type/iconography
+   system, state feedback (cooldowns, damage, resource bars), and the
+   art-style's texture/bevel/glow language.
+3. **Build the mock as a self-contained HTML artifact** — same rules as
+   the rest of this skill. Game UIs lean on absolute positioning over a
+   backdrop, bitmap/────display fonts, layered panels with custom
+   borders, and animated state (use the `frame-*` / `gsap-*` / `remotion`
+   recipes for motion). Pull a `references/design-systems/` vibe only if
+   the user has no art direction; otherwise derive tokens from the
+   reference screenshots.
+4. **Render-check** with `references/craft/headless-rendering.md` when the
+   deliverable is a fixed-resolution PNG (e.g. a 1080p HUD comp).
+
+Don't import web tropes (top nav bars, card grids, hamburger menus) into
+a game UI unless the reference material actually uses them.
 
 ## Frontend design — when there's no brand to lean on
 
