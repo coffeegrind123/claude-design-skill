@@ -16,13 +16,14 @@ local working directory without the hosted environment.
 
 ## What's bundled
 
-The `references/` tree (257 files) is vendored from
+The `references/` tree (282 files) is vendored from
 [`nexu-io/open-design`][od] and [`google-labs-code/design.md`][dmd] under
-Apache 2.0, plus an integrated game-UI reference pipeline and an anti-slop
-**taste layer** (6 skill-local files) adapted from
-[`Leonxlnx/taste-skill`][taste] under MIT:
+Apache 2.0 (open-design now vendors the full [`Leonxlnx/taste-skill`][taste]
+collection too), plus an integrated game-UI reference pipeline and a
+skill-local anti-slop **taste layer** (6 files: 4 craft docs + 2 recipes)
+adapted from taste-skill under MIT:
 
-- **114 named workflow recipes** under `references/skills/` —
+- **131 named workflow recipes** under `references/skills/` —
   `frontend-design`, `web-artifacts-builder`, `login-flow`,
   `resume-modern`, `data-report`, `poster-hero`, `brand-guidelines`,
   `slides` / `ppt-keynote` / `deck-swiss-international`, `remotion`,
@@ -33,17 +34,21 @@ Apache 2.0, plus an integrated game-UI reference pipeline and an anti-slop
   `replicate`, `minimax-*`, `imagen`, `imagegen`, `sora`, `speech`,
   `pixelbin-media`, `nanobanana-ppt`, `gif-sticker-maker`,
   `ai-music-album`) are excluded — they need vendor keys and don't map to
-  Claude Code's native tools. The taste layer adds `taste-skill`,
-  `brandkit`, `image-to-code`, and `imagegen-frontend` (distinct from the
-  excluded upstream `imagegen`). `_INDEX.md` lists all.
-- **12 design-discipline docs** under `references/craft/` (+ a `README.md`
+  Claude Code's native tools. Upstream now includes the full taste-skill
+  collection (`taste-skill`, `brandkit`, `minimalist-skill`,
+  `redesign-skill`, `soft-skill`, and more); the skill-local taste layer
+  adds only the concise `image-to-code` and `imagegen-frontend` recipes
+  (distinct from the excluded upstream `imagegen`). `_INDEX.md` lists all.
+- **18 design-discipline docs** under `references/craft/` (+ a `README.md`
   index) — `anti-ai-slop.md` (the seven cardinal sins),
   `accessibility-baseline.md`, `animation-discipline.md`, `color.md`,
   `form-validation.md`, `laws-of-ux.md`, `rtl-and-bidi.md`,
   `state-coverage.md`, `typography-hierarchy.md`,
   `typography-hierarchy-editorial.md`, `typography.md`, and
   `headless-rendering.md` (skill-local: the Chromium render-then-crop
-  pipeline).
+  pipeline), plus the skill-local **taste layer** — `taste-dials.md`
+  (Design Read + three dials), `redesign-audit.md`,
+  `output-completeness.md`, and `anti-ai-slop-taste.md`.
 - **27 brand-grade design systems** under `references/design-systems/` —
   `apple`, `stripe`, `figma`, `vercel`, `notion`, `linear-app`, `github`,
   `openai`, `framer`, `raycast`, `claude`, `supabase`, `airbnb`, `shopify`,
@@ -147,9 +152,9 @@ The script wipes and rebuilds `references/skills`, `craft`, `design-systems`,
 `html-ppt`, and `design-md` from those clones, **preserving** the skill-local
 `references/craft/headless-rendering.md` and the anti-slop **taste layer**
 (`craft/{taste-dials,redesign-audit,output-completeness,anti-ai-slop-taste}.md`
-and `skills/{taste-skill,brandkit,image-to-code,imagegen-frontend}.md` —
-snapshotted before the wipe, restored after, and folded into the generated
-`skills/_INDEX.md`), and re-syncing `references/game-ui/`
+and `skills/{image-to-code,imagegen-frontend}.md` — snapshotted before the
+wipe, restored after, folded into the generated `skills/_INDEX.md`, and
+re-documented in `craft/README.md`), and re-syncing `references/game-ui/`
 from `~/.claude/skills/gameuidatabase` (override paths via the `OPEN_DESIGN_SRC`,
 `DESIGN_MD_SRC`, and `GAME_UI_SRC` env vars). Curation knobs live at the top of
 the script: `SKILL_EXCLUDE` (external paid-API skills), `DESIGN_SYSTEMS`
@@ -164,10 +169,14 @@ Notes on upstream drift this script already accounts for:
   mirror adds/drops many recipes. After a re-vendor, diff
   `references/skills/_INDEX.md` and refresh any example skill names cited in
   `SKILL.md` / this README so no reference dangles.
-- **Taste layer is hand-authored, not vendored.** `vendor.ts` protects it
-  across the wipe but cannot regenerate it from Open Design. To refresh it
-  against its own upstream, re-derive the files from
-  [`Leonxlnx/taste-skill`][taste] — the per-file source map is in `NOTICE`.
+- **Taste layer is hand-authored, not vendored.** `vendor.ts` protects the
+  four craft docs + `image-to-code`/`imagegen-frontend` across the wipe but
+  cannot regenerate them from Open Design. To refresh them against their own
+  upstream, re-derive from [`Leonxlnx/taste-skill`][taste] — per-file source
+  map in `NOTICE`. Note: upstream Open Design now vendors the full
+  taste-skill collection itself (including the complete `taste-skill` and
+  `brandkit`), so those flow through the normal vendor and are deliberately
+  **not** kept as local copies (they'd only shadow the fuller originals).
 
 For the broader (openclaude monorepo) procedure — build verification, the
 generated TS manifest, the container hot-patch, and the changelog discipline —
@@ -187,11 +196,13 @@ This skill bundles content adapted from these upstream sources:
 4. **gameuidatabase skill** — integrated in full under `references/game-ui/`
    for building/mocking game UIs from real reference screenshots.
 5. **taste-skill** ([Leonxlnx/taste-skill][taste]) — MIT-licensed
-   (© 2026 Leonxlnx) anti-slop frontend framework. The taste layer (Design
-   Read + dials, redesign audit, output completeness, the extended slop
-   tells + em-dash ban, and the `taste-skill` / `brandkit` / `image-to-code`
-   / `imagegen-frontend` recipes) is adapted from it, rewritten to this
-   skill's HTML-artifact workflow, and preserved across `scripts/vendor.ts`.
+   (© 2026 Leonxlnx) anti-slop frontend framework. The skill-local taste
+   layer (Design Read + dials, redesign audit, output completeness, the
+   extended slop tells + em-dash ban, and the concise `image-to-code` /
+   `imagegen-frontend` recipes) is adapted from it and preserved across
+   `scripts/vendor.ts`. Upstream Open Design also now vendors the full
+   taste-skill collection (incl. the complete `taste-skill` and `brandkit`),
+   which flows through the normal vendor.
 
 See `NOTICE` for full attribution and the per-file source map. Open Design
 and design.md content is Apache 2.0; the taste layer is MIT.

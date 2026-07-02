@@ -6,14 +6,16 @@ Read the matching `<name>.md` before starting a project of that kind.
 - **8-bit-orbit-video-template** — Hyperframes-based video template for retro pixel deck motion design. Use when users want a high-fidelity, multi-scene HTML-to-video composition with advanced transitions, interactive preview controls, and ready-to-render
 - **ad-creative** — Generate and iterate ad creative including headlines, descriptions, and primary text. Useful for paid social and search ad iteration.
 - **after-hours-editorial-template** — Luxury dark-editorial HyperFrames template for three-page cinematic storyboards, inspired by haute couture title cards and magazine chapter spreads. Use when the user asks for premium fashion-style motion pages, moody se
-- **agent-browser** — Browser automation CLI for AI agents. Use when the user needs to inspect, test, or automate browser behavior: navigating pages, filling forms, clicking buttons, taking screenshots, extracting page data, testing web apps,
+- **agent-browser** — Browser automation CLI for AI agents. Use when the user needs to inspect, test, or automate browser behavior: navigating pages, filling forms, clicking buttons, taking screenshots, extracting page data, reading selected 
 - **algorithmic-art** — Create generative art using p5.js with seeded randomness so every render is reproducible. Useful for procedural posters, motion-style stills, and artistic frame studies.
 - **apple-hig** — Apple Human Interface Guidelines as 14 agent skills covering platforms, foundations, components, patterns, inputs, and technologies for iOS, macOS, visionOS, watchOS, and tvOS.
 - **article-magazine** — "Huashu / huashu-md-html-inspired magazine article layout for turning Markdown or notes into a polished long-form HTML essay."
 - **artifacts-builder** — Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind CSS, shadcn/ui).
 - **brainstorming** — Transform rough ideas into fully-formed designs through structured questioning and alternative exploration. Useful early in concept work.
+- **brand-extract** — Extract a complete Brand Kit from a live website by driving the in-app browser. Use when a brand-extraction project opens with a site in the Browser tab, or when the user asks to "extract a brand", "pull the brand from <
 - **brand-guidelines** — Apply Anthropic's official brand colors and typography to artifacts for consistent visual identity and professional design standards. A reference for shaping your own.
-- **brandkit** — Premium brand-identity board — logo system, color, type, mockups, and brand essence as a multi-panel guidelines board. Strategy-first logo concepting, a 3×3 panel system, and mode presets (dark developer, security, luxury, editorial, voice). Distilled from Leonxlnx/taste-skill.
+- **brandkit** — Premium brand-kit image generation skill for creating high-end brand-guidelines boards, logo systems, identity decks, and visual-world presentations. Trained for minimalist, cinematic, editorial, dark-tech, luxury, cultu
+- **brutalist-skill** — Raw mechanical interfaces fusing Swiss typographic print with military terminal aesthetics. Rigid grids, extreme type scale contrast, utilitarian color, analog degradation effects. For data-heavy dashboards, portfolios, 
 - **canvas-design** — Create beautiful visual art in PNG and PDF documents using design philosophy and aesthetic principles for posters, illustrations, and static pieces.
 - **card-twitter** — "Twitter quote or data card designed to pair with a post."
 - **card-xiaohongshu** — "Xiaohongshu-style knowledge cards, arranged as a swipeable multi-card carousel."
@@ -35,7 +37,9 @@ Read the matching `<name>.md` before starting a project of that kind.
 - **doc-kami-parchment** — "Warm parchment canvas (#f5f4ed), monochrome ink-blue accent (#1B365D), one serif family, and editorial-grade typography."
 - **docx** — Create, edit, and analyze Word documents with tracked changes, comments, and formatting. Useful for design briefs, copy docs, and review-ready deliverables.
 - **domain-name-brainstormer** — Generate creative domain name ideas and check availability across multiple TLDs including .com, .io, .dev, and .ai.
+- **ecommerce-image-workflow** — Reference-product ecommerce image workflow for generating a compact set of product-faithful main, feature, and lifestyle images from real product reference photos. V1 requires uploaded product imagery and intentionally d
 - **editorial-burgundy-principles-template** — Editorial studio deck template in burgundy / blush / muted-gold palette. Use when users ask for premium manifesto or culture slides with pill tags, large typographic statements, principle cards, and guided keyboard/click
+- **emilkowalski-motion** — Motion-design follow-up skill inspired by Emil Kowalski's animation guidance. Use after an interface exists to add tasteful micro-interactions, state transitions, and page motion with product-grade restraint.
 - **enhance-prompt** — Improve prompts with design specs and UI/UX vocabulary. Useful for design-to-code workflows and clarifying requests for visual output.
 - **export-download-debugging** — Diagnose and fix browser, preview, or Electron export/download failures, especially image export issues involving Save As, Blob/Data URLs, the File System Access API, createWritable failures, and 0 KB files.
 - **faq-page** — A Frequently Asked Questions (FAQ) page with collapsible accordion sections, search functionality, and category filtering. Use when the brief asks for "FAQ", "help center", "questions", or "support page".
@@ -60,6 +64,7 @@ Read the matching `<name>.md` before starting a project of that kind.
 - **frontend-skill** — Create visually strong landing pages, websites, and app UIs with restrained composition. OpenAI's production frontend playbook.
 - **frontend-slides** — Generate animation-rich HTML presentations with visual style previews. Useful for online keynotes, embedded talks, and interactive briefs.
 - **full-page-screenshot** — Capture full-page screenshots of web pages via Chrome DevTools Protocol with zero dependencies. Useful for portfolios, case studies, and audit reports.
+- **gpt-tasteskill** — Elite UX/UI & Advanced GSAP Motion Engineer. Enforces Python-driven true randomization for layout variance, strict AIDA page structure, wide editorial typography (bans 6-line wraps), gapless bento grids, strict GSAP Scro
 - **gsap-core** — Official GSAP skill for the core API — gsap.to(), from(), fromTo(), easing, duration, stagger, defaults, gsap.matchMedia() (responsive, prefers-reduced-motion). Use when the user asks for a JavaScript animation library, 
 - **gsap-frameworks** — Official GSAP skill for Vue, Svelte, and other non-React frameworks — lifecycle, scoping selectors, cleanup on unmount. Use when the user wants animation in Vue, Nuxt, Svelte, SvelteKit, or asks about GSAP with Vue/Svelt
 - **gsap-performance** — Official GSAP skill for performance — prefer transforms, avoid layout thrashing, will-change, batching. Use when optimizing GSAP animations, reducing jank, or when the user asks about animation performance, FPS, or smoot
@@ -72,11 +77,18 @@ Read the matching `<name>.md` before starting a project of that kind.
 - **hatch-pet** — Create, repair, validate, preview, and package Codex-compatible animated pet spritesheets from character art, screenshots, generated images, or visual references. Use when a user wants to hatch a Codex pet, create a cust
 - **html-ppt-retro-quarterly-review** — Retro Quarterly Review presentation template in a bold blue + orange editorial language. Use when users ask for a high-impact quarterly review / roadmap deck with heavyweight slab headlines, clean cream paper sections, s
 - **image-enhancer** — Improve image and screenshot quality by enhancing resolution, sharpness, and clarity for professional presentations and documentation.
-- **image-to-code** — Image-first website build: generate the design image(s) first, analyze them as the spec, then implement HTML to match. Prefers large section-specific images, fresh regeneration over cropping, clean heroes, no nested cards. Distilled from Leonxlnx/taste-skill.
-- **imagegen-frontend** — Image art-direction for frontend work — one reference image per section (web) or per screen (mobile), a combinatorial variation engine so output never looks templated, one consistent palette, and platform/safe-area discipline. Distilled from Leonxlnx/taste-skill.
+- **image-to-code** — Image-first website build — for visually important web work, generate the design image(s) first, analyze them deeply as the spec, then implement HTML that matches as closely as possible. Prefers large section-specific im
+- **image-to-code-skill** — Elite website image-to-code skill for Codex. For visually important web tasks, it must first generate the design image(s) itself, deeply analyze them, then implement the website to match them as closely as possible. In C
+- **imagegen-frontend** — Image art-direction for frontend work — direct a set of section-by-section reference images (web) or screen mockups (mobile) before or instead of writing HTML. Enforces one image per section, a combinatorial variation en
+- **imagegen-frontend-mobile** — Elite mobile app image-generation skill for creating premium, app-native screen concepts and flows. Designed for iOS, Android, and cross-platform mobile products. Prioritizes clean hierarchy, comfortably readable text, s
+- **imagegen-frontend-web** — Elite frontend image-direction skill for generating premium, conversion-aware website design references. CRITICAL OUTPUT RULE — generate ONE separate horizontal image FOR EVERY section. A landing page with 8 sections pro
+- **impeccable-design-polish** — Follow-up design polish skill inspired by Impeccable. Use after a web or HTML artifact exists to audit, critique, polish, animate, harden, and prepare the page for a live/share pass.
+- **library-curator** — Search the OD Library (the global asset registry) and apply matching assets into the current project mid-task. Use when the user asks to reuse an image they captured/uploaded earlier, "pull a logo/screenshot from my libr
 - **login-flow** — Mobile login and authentication flow screens
 - **marketing-psychology** — Apply psychological principles and behavioral science to copy and design. Useful for tightening hooks, framing, and pricing presentation.
+- **minimalist-skill** — Clean editorial-style interfaces. Warm monochrome palette, typographic contrast, flat bento grids, muted pastels. No gradients, no heavy shadows.
 - **mockup-device-3d** — "Static iPhone and MacBook 3D-style showcase with real HTML embedded on screens, glass-lens refraction, and 360-degree turntable composition."
+- **output-skill** — Overrides default LLM truncation behavior. Enforces complete code generation, bans placeholder patterns, and handles token-limit splits cleanly. Apply to any task requiring exhaustive, unabridged output.
 - **paywall-upgrade-cro** — Design and optimize upgrade screens, paywalls, and upsell modals. Useful for SaaS conversion design and pricing-page experiments.
 - **pdf** — Extract text, create PDFs, and handle forms. Useful for press releases, branded one-pagers, and printable design deliverables.
 - **plan-design-review** — Senior Designer review: rates each design dimension 0-10, explains what a 10 looks like, and flags AI Slop signals. Useful as a gate before merging UI work.
@@ -87,6 +99,8 @@ Read the matching `<name>.md` before starting a project of that kind.
 - **pptx-generator** — Create and edit PowerPoint presentations from scratch with PptxGenJS — MiniMax's production-tested deck pipeline.
 - **pptx-html-fidelity-audit** — Audit a python-pptx export against its source HTML deck, identify layout/content drift (footer overflow, cropped content, missing italic/em, lost styling, off-rhythm spacing), and re-export with strict footer-rail + curs
 - **pr-feedback-quality-gate** — Safely track pull request feedback, resolve review comments or merge conflicts, validate fixes, and use a read-only cross-review before committing or pushing follow-up changes.
+- **redesign-skill** — Upgrades existing websites and apps to premium quality. Audits current design, identifies generic AI patterns, and applies high-end design standards without breaking functionality. Works with any CSS framework or vanilla
+- **reference-design-contract** — Turn vague taste, screenshots, URLs, product notes, or "make it feel like this" references into a grounded DESIGN.md plus an implementation handoff. Use it before prototypes, decks, redesigns, or image remix work when th
 - **release-notes-one-pager** — Release notes one-page HTML with highlights, Added, Fixed, Breaking changes, Known issues, and Upgrade note. Writes explicit "None" style sections whenever the user does not provide details.
 - **remotion** — Programmatic video creation with React. Useful for branded explainers, social cuts, dashboards-to-video, and reproducible motion graphics.
 - **research-decision-room** — Turn messy user research notes, interviews, support tickets, surveys, and product context into an evidence-backed decision room: a single HTML artifact with an evidence ledger, theme map, confidence heatmap, opportunity 
@@ -100,11 +114,14 @@ Read the matching `<name>.md` before starting a project of that kind.
 - **social-reddit-card** — "Realistic Reddit post card with vote rail and comment count, suited to video overlays or story sharing."
 - **social-spotify-card** — "Spotify Now Playing-style card with album art, progress bar, and playback controls, suited to video overlays or personal homepages."
 - **social-x-post-card** — "Realistic X post card with engagement metrics (likes, reposts, views), suited to video overlays or shareable image cards."
+- **soft-skill** — Teaches the AI to design like a high-end agency. Defines the exact fonts, spacing, shadows, card structures, and animations that make a website feel expensive. Blocks all the common defaults that make AI designs look che
 - **stitch-loop** — Iterative design-to-code feedback loop. Critique → adjust → ship cycle for tightening visual fidelity between brief and built UI.
+- **stitch-skill** — Semantic Design System Skill for Google Stitch. Generates agent-friendly DESIGN.md files that enforce premium, anti-generic UI standards — strict typography, calibrated color, asymmetric layouts, perpetual micro-motion, 
 - **swiftui-design** — SwiftUI 前端设计 skill — anti AI-slop rules, design direction advisor, brand asset protocol, and five-dimension review. Works with Claude Code, Cursor, Codex, and OpenCode.
 - **swiss-creative-mode-template** — Swiss-inspired creative-mode presentation template skill with bold editorial typography, high-contrast geometric cards, interactive slide navigation, theme switching, hotspot overlays, and palette choreography in a singl
 - **swiss-user-research-video-template** — Swiss-style user-research narrative template in warm-paper editorial aesthetics. Use when users ask for a premium research deck or story-first live artifact with minimalist typography, high-clarity layout, subtle motion,
-- **taste-skill** — High-agency frontend skill that gives AI good taste with tunable design variance, motion intensity, and visual density to stop generic UI slop.
+- **taste-skill** — Anti-slop frontend skill for landing pages, portfolios, and redesigns. The agent reads the brief, infers the right design direction, and ships interfaces that do not look templated. Real design systems when applicable, a
+- **taste-skill-v1** — The original v1 taste-skill, preserved for projects depending on its exact behavior. The current default is `design-taste-frontend` (v2 experimental), which is a substantial rewrite. Use this v1 install name only if you 
 - **theme-factory** — Apply professional font and color themes to artifacts including slides, docs, reports, and HTML landing pages. Ships 10 pre-set themes.
 - **threejs** — Three.js skills for creating 3D elements and interactive experiences in the browser — scenes, materials, controls, and post-processing.
 - **ui-skills** — Opinionated, evolving constraints to guide agents when building interfaces. Useful for keeping output coherent across many small UI pieces.

@@ -62,13 +62,18 @@ This bundled skill ships content adapted from several upstream sources:
      + its laziness-research basis (taste-skill full-output-enforcement).
    - references/craft/anti-ai-slop-taste.md — the extended slop-tell
      catalog and the em-dash ban (taste-skill §4, §9).
-   - references/skills/taste-skill.md — the flagship taste recipe.
-   - references/skills/brandkit.md, image-to-code.md, imagegen-frontend.md
-     — brand / image-direction recipes (taste-skill brandkit,
-     image-to-code, imagegen-frontend-web|mobile).
+   - references/skills/image-to-code.md and imagegen-frontend.md — concise
+     image-direction recipes (from taste-skill image-to-code and
+     imagegen-frontend-web|mobile).
 
-   Note: references/skills/imagegen-frontend.md is this taste-layer recipe
-   and is distinct from the Open Design skill named "imagegen", which is
+   Note: upstream Open Design now vendors the FULL taste-skill collection
+   itself (taste-skill, brandkit, minimalist-skill, brutalist-skill,
+   soft-skill, redesign-skill, output-skill, image-to-code-skill,
+   imagegen-frontend-web|mobile, stitch-skill, and more). We therefore do
+   NOT keep local copies of taste-skill.md or brandkit.md — the fuller
+   upstream versions flow through unchanged. The skill-local recipes above
+   are distinct, differently-named concise variants; imagegen-frontend.md
+   is also distinct from the Open Design skill named "imagegen", which is
    excluded from the upstream vendor (see the exclusion set in vendor.ts).
 
 License: Apache 2.0 (Open Design and design.md). The Claude Design master

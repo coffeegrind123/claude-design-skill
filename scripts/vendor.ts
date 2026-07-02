@@ -12,11 +12,14 @@
  *     referenced by SKILL.md and would be clobbered by a blind wipe).
  *   - Preserves the anti-slop TASTE LAYER adapted from Leonxlnx/taste-skill (MIT):
  *     craft/{taste-dials,redesign-audit,output-completeness,anti-ai-slop-taste}.md and
- *     skills/{taste-skill,brandkit,image-to-code,imagegen-frontend}.md are hand-authored,
- *     snapshotted before the wipe, restored after, and folded into the generated
- *     skills/_INDEX.md. A blind re-vendor would otherwise delete them. To refresh the
- *     taste layer against upstream, re-derive those files from Leonxlnx/taste-skill by
- *     hand (see README "Refreshing against upstream"); this script only protects them.
+ *     skills/{image-to-code,imagegen-frontend}.md are hand-authored, snapshotted before
+ *     the wipe, restored after, and folded into the generated skills/_INDEX.md. The taste
+ *     craft docs are also re-appended to the (upstream-regenerated) craft/README.md index.
+ *     NOTE: taste-skill and brandkit are deliberately NOT preserved — upstream open-design
+ *     now vendors the full originals (taste-skill ~1233 lines, brandkit ~822 lines), so we
+ *     let those flow through rather than shadow them with thinner local copies. To refresh
+ *     the remaining taste files against upstream, re-derive them from Leonxlnx/taste-skill
+ *     by hand (see README "Refreshing against upstream"); this script only protects them.
  */
 
 import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs'
@@ -54,9 +57,10 @@ const CRAFT_PRESERVE = [
 ]
 
 // Skill recipe files that are skill-local (hand-authored, not upstream) — preserved across
-// the skills/ wipe and folded into the generated index. The flagship taste-skill recipe plus
-// the taste layer's image-direction recipes, all adapted from Leonxlnx/taste-skill (MIT).
-const SKILLS_PRESERVE = ['taste-skill.md', 'brandkit.md', 'image-to-code.md', 'imagegen-frontend.md']
+// the skills/ wipe and folded into the generated index. Adapted from Leonxlnx/taste-skill (MIT).
+// taste-skill and brandkit are intentionally omitted: upstream open-design now vendors the full
+// originals, so we let those flow through instead of shadowing them with thinner local copies.
+const SKILLS_PRESERVE = ['image-to-code.md', 'imagegen-frontend.md']
 
 // Curated design-systems subset (matches the original build script's behavior).
 const DESIGN_SYSTEMS = [
@@ -139,6 +143,31 @@ for (const f of CRAFT_PRESERVE) {
   if (preserved[f]) { writeFileSync(join(REF_ROOT, 'craft', f), preserved[f]); console.log(`  preserved local: craft/${f}`) }
 }
 console.log(`  ${craftN} upstream craft docs vendored (+${Object.keys(preserved).length} preserved local)`)
+
+// Document the skill-local taste-layer craft docs in the freshly-copied craft/README.md.
+// Upstream regenerates that file each vendor and does not list our local docs, so append a
+// section describing them (idempotent per run — the copied README never already has it).
+const craftReadmePath = join(REF_ROOT, 'craft', 'README.md')
+if (existsSync(craftReadmePath)) {
+  const tasteSection = [
+    '',
+    '## Taste layer (skill-local, adapted from Leonxlnx/taste-skill, MIT)',
+    '',
+    'These docs are hand-authored, not vendored from upstream. `scripts/vendor.ts`',
+    'preserves them across the wipe (`CRAFT_PRESERVE`) and re-appends this section:',
+    '',
+    '- `taste-dials.md` — the Design Read (brief inference) + the three dials',
+    '  (`DESIGN_VARIANCE` / `MOTION_INTENSITY` / `VISUAL_DENSITY`) with inference + preset',
+    '  tables and per-level technical bands. Wired into the root `SKILL.md` "Design',
+    '  direction" step so it fires on landing / portfolio / marketing / redesign work.',
+    '- `redesign-audit.md` — audit-first redesign protocol + concrete diagnose-and-fix catalog.',
+    '- `output-completeness.md` — anti-truncation / no-placeholder enforcement.',
+    '- `anti-ai-slop-taste.md` — extended slop-tell catalog + the em-dash ban, extending `anti-ai-slop.md`.',
+    '',
+  ].join('\n')
+  writeFileSync(craftReadmePath, readFileSync(craftReadmePath, 'utf8') + tasteSection)
+  console.log('  appended taste-layer section to craft/README.md')
+}
 
 // --- Design systems (curated) ---
 console.log('Vendoring design-systems/ (curated) ...')

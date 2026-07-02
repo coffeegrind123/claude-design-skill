@@ -1,6 +1,6 @@
 ---
 name: claude-design
-description: Anthropic Labs Claude Design as a markdown-only skill — produce polished visual work (designs, prototypes, slides, one-pagers, animations, shaders, decks, marketing collateral, game UIs) by writing self-contained HTML artifacts. You are an expert designer working with the user as a manager. HTML is your tool; the medium varies — a slide deck is not a webpage, an animation is not a webpage, a mobile mockup is not a webpage, a game HUD is not a webpage. Bundles 114 named workflow recipes, 16 design-discipline docs, 27 brand-grade design systems, 36 deck themes, 31 slide layouts, the deck-stage runtime, the google-labs-code/design.md format spec + canonical examples, and an integrated game-UI reference pipeline (gameuidatabase.com) for building/mocking game interfaces — vendored from nexu-io/open-design and google-labs-code/design.md under Apache 2.0, plus an anti-slop taste layer (Design Read + three dials, redesign audit, extended slop tells, brand + image-direction recipes) adapted from Leonxlnx/taste-skill (MIT).
+description: Anthropic Labs Claude Design as a markdown-only skill — produce polished visual work (designs, prototypes, slides, one-pagers, animations, shaders, decks, marketing collateral, game UIs) by writing self-contained HTML artifacts. You are an expert designer working with the user as a manager. HTML is your tool; the medium varies — a slide deck is not a webpage, an animation is not a webpage, a mobile mockup is not a webpage, a game HUD is not a webpage. Bundles 131 named workflow recipes, 18 design-discipline docs, 27 brand-grade design systems, 36 deck themes, 31 slide layouts, the deck-stage runtime, the google-labs-code/design.md format spec + canonical examples, and an integrated game-UI reference pipeline (gameuidatabase.com) for building/mocking game interfaces — vendored from nexu-io/open-design and google-labs-code/design.md under Apache 2.0 (open-design now vendors the full Leonxlnx/taste-skill collection too), plus a skill-local anti-slop taste layer (the Design Read + three dials, redesign audit, output-completeness, and extended slop tells, wired into the workflow) adapted from Leonxlnx/taste-skill (MIT).
 when_to_use: |
   Use when the user wants to design, prototype, mock up, sketch,
   wireframe, build a deck, build slides, build a landing page or
@@ -316,9 +316,13 @@ brief, not preemptively:
   modifying an existing site rather than building greenfield.
   **`output-completeness.md`** — Read when the artifact has a countable
   set of deliverables (decks, multi-screen prototypes, variant grids).
-  These four are the anti-slop taste layer (Leonxlnx/taste-skill, MIT);
-  the matching build recipes are `references/skills/taste-skill.md`,
-  `brandkit.md`, `image-to-code.md`, and `imagegen-frontend.md`.
+  These four craft docs are the skill-local anti-slop taste layer
+  (Leonxlnx/taste-skill, MIT). The matching build recipes ship as skills:
+  the full `references/skills/taste-skill.md` and `brandkit.md` (from
+  upstream open-design, which now vendors the complete taste-skill
+  collection — `minimalist-skill`, `redesign-skill`, `soft-skill`, and
+  more), plus the skill-local concise `image-to-code.md` and
+  `imagegen-frontend.md`.
 - **`references/design-systems/<vibe>.md`** — Read when the user has no
   brand to anchor on. 27 representative systems (brand-grade like apple /
   stripe / linear-app / vercel, plus aesthetic schools like brutalism /

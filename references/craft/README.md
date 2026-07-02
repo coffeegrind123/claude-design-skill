@@ -41,6 +41,12 @@ od:
 Allowed values match the file names in this directory minus the `.md`
 extension. Unknown values are silently ignored (forward-compatible).
 
+Run `pnpm lint:craft` after adding or changing `od.craft.requires`. The
+repository guard reports unresolved slugs with their manifest paths, so typos
+cannot silently drop a craft section from the runtime prompt. If a slug is an
+intentional forward reference, list it in `craft/FUTURE_SECTIONS.md` until the
+matching `craft/<slug>.md` file ships.
+
 ### Why silent fallback instead of fail-fast?
 
 A skeptical reader will ask: "If a skill requests a planned-but-not-yet-vendored
@@ -81,10 +87,6 @@ A purely behavioral craft file (state-coverage, animation-discipline) is guidanc
 | `rtl-and-bidi.md` | `rtl-and-bidi` | Any skill that ships localized text or layout: blogs, docs, financial tables, mobile apps, anything that may render Arabic / Hebrew / Persian |
 | `form-validation.md` | `form-validation` | Any skill whose primary artifact contains an interactive form: lead capture, sign-in, signup, settings, multi-step intake |
 | `laws-of-ux.md` | `laws-of-ux` | Any skill whose composition decisions hit named cognitive limits: pricing pages (Hick's, Choice Overload, Von Restorff), dashboards (Pareto, Selective Attention, Working Memory), onboarding (Goal-Gradient, Zeigarnik, Peak-End), modals (Fitts's, Tesler's). Sibling axis to the rendering-rule files above — covers what to compose, not how to render. |
-| `taste-dials.md` | `taste-dials` | Landing pages, portfolios, marketing sites, and redesigns — anything that needs a stated design direction before code. The Design Read (brief inference), the three dials (`DESIGN_VARIANCE` / `MOTION_INTENSITY` / `VISUAL_DENSITY`) with inference + preset tables, technical bands per level, and anti-default discipline. Adapted from Leonxlnx/taste-skill; skill-local, preserved across re-vendor. |
-| `anti-ai-slop-taste.md` | `anti-ai-slop-taste` | Extends `anti-ai-slop.md` with the taste-skill production-test tell catalog (Lila rule, premium-consumer palette ban, hero hard rules, eyebrow restraint) and the em-dash ban on generated copy. Guidance, not linter-checked. Skill-local, preserved across re-vendor. |
-| `redesign-audit.md` | `redesign-audit` | Any skill that modifies an existing site rather than building greenfield. Mode detection (greenfield / preserve / overhaul), the audit-before-touching checklist, what never changes silently (slugs, nav labels, form fields, wordmark, legal copy), modernisation levers in priority order, and a concrete diagnose-and-fix catalog. Adapted from Leonxlnx/taste-skill. |
-| `output-completeness.md` | `output-completeness` | Any skill whose artifact has a countable set of deliverables (decks, multi-screen prototypes, component sets, variant grids) where the model tends to ship fewer than asked. Bans placeholder / truncation patterns, and gives a scope-lock → build → cross-check process plus a clean pause/resume convention. Orthogonal to aesthetics; adapted from Leonxlnx/taste-skill. |
 
 **Partial-stateful skills.** A skill that's mostly static but contains an embedded form, data table, or query surface should opt in. State-coverage rules apply to the stateful component, not the whole page.
 
@@ -99,10 +101,15 @@ Craft content is adapted from the MIT-licensed
 back to OD's design tokens (`var(--accent)` etc.) instead of generic
 Tailwind hex values.
 
-The `taste-dials.md`, `redesign-audit.md`, `output-completeness.md`, and
-`anti-ai-slop-taste.md` docs are the anti-slop **taste layer** adapted
-from the MIT-licensed
-[taste-skill](https://github.com/Leonxlnx/taste-skill) project
-(© 2026 Leonxlnx), rewritten to this skill's HTML-artifact workflow.
-These are skill-local (not vendored from upstream) and are preserved
-across `scripts/vendor.ts` re-vendors — see the top-level `NOTICE`.
+## Taste layer (skill-local, adapted from Leonxlnx/taste-skill, MIT)
+
+These docs are hand-authored, not vendored from upstream. `scripts/vendor.ts`
+preserves them across the wipe (`CRAFT_PRESERVE`) and re-appends this section:
+
+- `taste-dials.md` — the Design Read (brief inference) + the three dials
+  (`DESIGN_VARIANCE` / `MOTION_INTENSITY` / `VISUAL_DENSITY`) with inference + preset
+  tables and per-level technical bands. Wired into the root `SKILL.md` "Design
+  direction" step so it fires on landing / portfolio / marketing / redesign work.
+- `redesign-audit.md` — audit-first redesign protocol + concrete diagnose-and-fix catalog.
+- `output-completeness.md` — anti-truncation / no-placeholder enforcement.
+- `anti-ai-slop-taste.md` — extended slop-tell catalog + the em-dash ban, extending `anti-ai-slop.md`.
