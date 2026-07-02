@@ -10,6 +10,13 @@
  *   - Full skills mirror EXCEPT an external-paid-API exclusion set.
  *   - Preserves craft/headless-rendering.md (skill-local adaptation, not upstream;
  *     referenced by SKILL.md and would be clobbered by a blind wipe).
+ *   - Preserves the anti-slop TASTE LAYER adapted from Leonxlnx/taste-skill (MIT):
+ *     craft/{taste-dials,redesign-audit,output-completeness,anti-ai-slop-taste}.md and
+ *     skills/{taste-skill,brandkit,image-to-code,imagegen-frontend}.md are hand-authored,
+ *     snapshotted before the wipe, restored after, and folded into the generated
+ *     skills/_INDEX.md. A blind re-vendor would otherwise delete them. To refresh the
+ *     taste layer against upstream, re-derive those files from Leonxlnx/taste-skill by
+ *     hand (see README "Refreshing against upstream"); this script only protects them.
  */
 
 import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs'
@@ -40,7 +47,16 @@ const SKILL_EXCLUDE = new Set<string>([
 ])
 
 // Craft docs that are skill-local (hand-authored, not upstream) — preserved across the wipe.
-const CRAFT_PRESERVE = ['headless-rendering.md']
+// The taste-* docs are the anti-slop taste layer adapted from Leonxlnx/taste-skill (MIT).
+const CRAFT_PRESERVE = [
+  'headless-rendering.md',
+  'taste-dials.md', 'redesign-audit.md', 'output-completeness.md', 'anti-ai-slop-taste.md',
+]
+
+// Skill recipe files that are skill-local (hand-authored, not upstream) — preserved across
+// the skills/ wipe and folded into the generated index. The flagship taste-skill recipe plus
+// the taste layer's image-direction recipes, all adapted from Leonxlnx/taste-skill (MIT).
+const SKILLS_PRESERVE = ['taste-skill.md', 'brandkit.md', 'image-to-code.md', 'imagegen-frontend.md']
 
 // Curated design-systems subset (matches the original build script's behavior).
 const DESIGN_SYSTEMS = [
@@ -58,6 +74,13 @@ const preserved: Record<string, Buffer> = {}
 for (const f of CRAFT_PRESERVE) {
   const p = join(REF_ROOT, 'craft', f)
   if (existsSync(p)) preserved[f] = readFileSync(p)
+}
+
+// --- Preserve skill-local recipe files (taste layer) across the wipe ---
+const preservedSkills: Record<string, Buffer> = {}
+for (const f of SKILLS_PRESERVE) {
+  const p = join(REF_ROOT, 'skills', f)
+  if (existsSync(p)) preservedSkills[f] = readFileSync(p)
 }
 
 console.log('Wiping references tree...')
@@ -84,15 +107,26 @@ for (const name of readdirSync(join(SRC, 'skills')).sort()) {
 }
 console.log(`  ${skillNames.length} skills vendored (${excluded} excluded as external-API)`)
 
+// Restore skill-local recipe files (taste layer) after the upstream copy.
+for (const f of SKILLS_PRESERVE) {
+  if (preservedSkills[f]) { writeFileSync(join(REF_ROOT, 'skills', f), preservedSkills[f]); console.log(`  preserved local skill: ${f}`) }
+}
+
+// Generate the index from EVERY recipe present (upstream + preserved local), sorted, so the
+// taste layer's recipes appear alongside the vendored ones.
 const idx: string[] = ['# Skills index', '', 'Each entry below is a recipe for one artifact type.',
   'Read the matching `<name>.md` before starting a project of that kind.', '']
-for (const name of skillNames) {
+const allSkillNames = readdirSync(join(REF_ROOT, 'skills'))
+  .filter(f => f.endsWith('.md') && f !== '_INDEX.md')
+  .map(f => f.replace(/\.md$/, '')).sort()
+for (const name of allSkillNames) {
   const md = readFileSync(join(REF_ROOT, 'skills', `${name}.md`), 'utf8')
   const m = md.match(/description:\s*(?:\|\s*\n((?:\s+.*\n)+)|(.+))/)
   const desc = m ? (m[1] || m[2] || '').trim().split('\n').map(l => l.trim()).join(' ').slice(0, 220) : ''
   idx.push(`- **${name}** — ${desc}`)
 }
 writeFileSync(join(REF_ROOT, 'skills', '_INDEX.md'), idx.join('\n') + '\n')
+console.log(`  index: ${allSkillNames.length} entries (${skillNames.length} upstream + ${Object.keys(preservedSkills).length} preserved local)`)
 
 // --- Craft (+ preserved locals) ---
 console.log('Vendoring craft/ ...')
@@ -223,7 +257,7 @@ function countFiles(d: string): number {
   return n
 }
 console.log('\nSummary:')
-console.log(`  skills:             ${skillNames.length}`)
+console.log(`  skills:             ${skillNames.length + Object.keys(preservedSkills).length} (${skillNames.length} upstream + ${Object.keys(preservedSkills).length} preserved local taste layer)`)
 console.log(`  craft docs:         ${craftN + Object.keys(preserved).length}`)
 console.log(`  design systems:     ${ds.length}`)
 console.log(`  html-ppt themes:    ${themes}`)

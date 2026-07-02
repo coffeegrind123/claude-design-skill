@@ -13,6 +13,7 @@ Read the matching `<name>.md` before starting a project of that kind.
 - **artifacts-builder** — Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind CSS, shadcn/ui).
 - **brainstorming** — Transform rough ideas into fully-formed designs through structured questioning and alternative exploration. Useful early in concept work.
 - **brand-guidelines** — Apply Anthropic's official brand colors and typography to artifacts for consistent visual identity and professional design standards. A reference for shaping your own.
+- **brandkit** — Premium brand-identity board — logo system, color, type, mockups, and brand essence as a multi-panel guidelines board. Strategy-first logo concepting, a 3×3 panel system, and mode presets (dark developer, security, luxury, editorial, voice). Distilled from Leonxlnx/taste-skill.
 - **canvas-design** — Create beautiful visual art in PNG and PDF documents using design philosophy and aesthetic principles for posters, illustrations, and static pieces.
 - **card-twitter** — "Twitter quote or data card designed to pair with a post."
 - **card-xiaohongshu** — "Xiaohongshu-style knowledge cards, arranged as a swipeable multi-card carousel."
@@ -71,6 +72,8 @@ Read the matching `<name>.md` before starting a project of that kind.
 - **hatch-pet** — Create, repair, validate, preview, and package Codex-compatible animated pet spritesheets from character art, screenshots, generated images, or visual references. Use when a user wants to hatch a Codex pet, create a cust
 - **html-ppt-retro-quarterly-review** — Retro Quarterly Review presentation template in a bold blue + orange editorial language. Use when users ask for a high-impact quarterly review / roadmap deck with heavyweight slab headlines, clean cream paper sections, s
 - **image-enhancer** — Improve image and screenshot quality by enhancing resolution, sharpness, and clarity for professional presentations and documentation.
+- **image-to-code** — Image-first website build: generate the design image(s) first, analyze them as the spec, then implement HTML to match. Prefers large section-specific images, fresh regeneration over cropping, clean heroes, no nested cards. Distilled from Leonxlnx/taste-skill.
+- **imagegen-frontend** — Image art-direction for frontend work — one reference image per section (web) or per screen (mobile), a combinatorial variation engine so output never looks templated, one consistent palette, and platform/safe-area discipline. Distilled from Leonxlnx/taste-skill.
 - **login-flow** — Mobile login and authentication flow screens
 - **marketing-psychology** — Apply psychological principles and behavioral science to copy and design. Useful for tightening hooks, framing, and pricing presentation.
 - **mockup-device-3d** — "Static iPhone and MacBook 3D-style showcase with real HTML embedded on screens, glass-lens refraction, and 360-degree turntable composition."

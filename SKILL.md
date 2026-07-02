@@ -1,6 +1,6 @@
 ---
 name: claude-design
-description: Anthropic Labs Claude Design as a markdown-only skill — produce polished visual work (designs, prototypes, slides, one-pagers, animations, shaders, decks, marketing collateral, game UIs) by writing self-contained HTML artifacts. You are an expert designer working with the user as a manager. HTML is your tool; the medium varies — a slide deck is not a webpage, an animation is not a webpage, a mobile mockup is not a webpage, a game HUD is not a webpage. Bundles 111 named workflow recipes, 12 design-discipline docs, 27 brand-grade design systems, 36 deck themes, 31 slide layouts, the deck-stage runtime, the google-labs-code/design.md format spec + canonical examples, and an integrated game-UI reference pipeline (gameuidatabase.com) for building/mocking game interfaces — vendored from nexu-io/open-design and google-labs-code/design.md under Apache 2.0.
+description: Anthropic Labs Claude Design as a markdown-only skill — produce polished visual work (designs, prototypes, slides, one-pagers, animations, shaders, decks, marketing collateral, game UIs) by writing self-contained HTML artifacts. You are an expert designer working with the user as a manager. HTML is your tool; the medium varies — a slide deck is not a webpage, an animation is not a webpage, a mobile mockup is not a webpage, a game HUD is not a webpage. Bundles 114 named workflow recipes, 16 design-discipline docs, 27 brand-grade design systems, 36 deck themes, 31 slide layouts, the deck-stage runtime, the google-labs-code/design.md format spec + canonical examples, and an integrated game-UI reference pipeline (gameuidatabase.com) for building/mocking game interfaces — vendored from nexu-io/open-design and google-labs-code/design.md under Apache 2.0, plus an anti-slop taste layer (Design Read + three dials, redesign audit, extended slop tells, brand + image-direction recipes) adapted from Leonxlnx/taste-skill (MIT).
 when_to_use: |
   Use when the user wants to design, prototype, mock up, sketch,
   wireframe, build a deck, build slides, build a landing page or
@@ -19,7 +19,9 @@ when_to_use: |
   "marketing site", "pitch deck", "interactive demo", "animation",
   "shader", "iridescent", "particle effect", "loader", "onboarding
   flow", "design system", "tweakable", "live controls", "game UI",
-  "game HUD", "inventory screen", "main menu", "game interface".
+  "game HUD", "inventory screen", "main menu", "game interface",
+  "brand kit", "logo system", "identity", "redesign", "modernize this
+  site", "image-to-code", "recreate from a screenshot".
 allowed-tools: Read, Write, Edit, Glob, Grep, WebFetch, WebSearch, Task, AskUserQuestion, TodoWrite, mcp__browser__*, Bash(cp:*), Bash(mv:*), Bash(rm:*), Bash(mkdir:*), Bash(ls:*), Bash(chromium:*), Bash(google-chrome:*), Bash(playwright:*), Bash(puppeteer:*), Bash(python:*), Bash(python3:*), Bash(node:*), Bash(npx:*), Bash(pip:*), Bash(npm:*), Bash(git:*), Bash(bash:*), Bash(curl:*), Bash(wget:*), Bash(Xvfb:*), Bash(xdpyinfo:*), Bash(pgrep:*), Bash(jq:*), Bash(file:*), Bash(find:*), Bash(grep:*), Bash(sed:*), Bash(awk:*), Bash(cat:*), Bash(wc:*), Bash(head:*), Bash(tail:*), Bash(date:*)
 ---
 
@@ -123,7 +125,9 @@ walk it.
 
 **Success criteria**: You have a one-sentence summary of the visual
 vocabulary you'll work with (palette, type pairing, density, accent
-budget).
+budget). For landing / portfolio / marketing / redesign work, you have
+also stated a one-line **Design Read** and set the three dials — see the
+**Design direction** section below and `references/craft/taste-dials.md`.
 
 ### 3. Plan via TodoWrite
 
@@ -174,6 +178,42 @@ Brief end-of-turn summary, one sentence, caveats and next steps only.
 Don't recap the whole task — the user can read the diff.
 
 **Success criteria**: User has the file path. Summary is ≤ 2 sentences.
+
+## Design direction — the Design Read and the three dials
+
+For landing pages, portfolios, marketing sites, and redesigns, the most
+reliable anti-slop move is to **commit to a direction before writing
+HTML**, then hold it. Default LLM output looks templated because the
+model jumps to one house aesthetic instead of reading the brief. Do this
+every time on that kind of work (it does not replace the
+`AskUserQuestion` round — do both):
+
+1. **State a one-line Design Read.** *"Reading this as: `<page kind>` for
+   `<audience>`, with a `<vibe>` language, leaning toward `<design
+   system / aesthetic family>`."* The audience picks the aesthetic, not
+   your taste.
+2. **Set three dials** (baseline `8 / 6 / 4`, override only when the read
+   says so): `DESIGN_VARIANCE` (1 symmetry → 10 chaos),
+   `MOTION_INTENSITY` (1 static → 10 cinematic), `VISUAL_DENSITY` (1 airy
+   → 10 cockpit). Every layout, motion, and density call is gated by
+   these. Use these exact names.
+3. **Don't default** to AI-purple gradients, a centered hero on a dark
+   mesh, three equal feature cards, glassmorphism on everything, or Inter
+   + slate-900. Reach past them deliberately.
+
+The inference/preset tables, the technical bands per dial level, and the
+brief-inference signals live in **`references/craft/taste-dials.md`** —
+read it for any non-trivial marketing/portfolio work (the
+`references/skills/taste-skill.md` recipe is the matching build recipe).
+When the work is a **redesign** of an existing site, read
+**`references/craft/redesign-audit.md`** first (mode detection,
+audit-before-touching, what never changes silently, fix priority). Skim
+**`references/craft/anti-ai-slop.md`** and its taste extension
+**`anti-ai-slop-taste.md`** before shipping — the dials set direction,
+the tells catch backsliding (including the em-dash ban on generated
+copy). For decks / multi-screen prototypes / variant sets,
+**`references/craft/output-completeness.md`** keeps you from shipping
+fewer deliverables than asked.
 
 ## Output creation guidelines
 
@@ -260,13 +300,25 @@ brief, not preemptively:
   `remotion`, `threejs`, `shader-dev`, `d3-visualization`, `shadcn-ui`,
   `paywall-upgrade-cro`, and 100+ more). Index:
   `references/skills/_INDEX.md`.
-- **`references/craft/anti-ai-slop.md`** — Always skim before shipping.
-  The other 11 craft docs (accessibility, animation discipline, color,
-  form validation, laws of UX, RTL/bidi, state coverage, typography) —
-  read when the topic surfaces. **`headless-rendering.md`** — read
-  whenever you'll render an HTML artifact to a fixed-pixel PNG (Discord
-  card, OG image, social share); covers the Chromium
-  viewport-compensation bug and the render-then-crop pipeline.
+- **`references/craft/anti-ai-slop.md`** — Always skim before shipping;
+  its taste extension **`anti-ai-slop-taste.md`** adds the production-test
+  tells (Lila rule, premium-consumer palette ban) and the em-dash ban on
+  generated copy. The other craft docs (accessibility, animation
+  discipline, color, form validation, laws of UX, RTL/bidi, state
+  coverage, typography) — read when the topic surfaces.
+  **`headless-rendering.md`** — read whenever you'll render an HTML
+  artifact to a fixed-pixel PNG (Discord card, OG image, social share);
+  covers the Chromium viewport-compensation bug and the render-then-crop
+  pipeline.
+- **`references/craft/taste-dials.md`** — Read for any landing /
+  portfolio / marketing / redesign brief: the Design Read + three-dial
+  system that sets direction. **`redesign-audit.md`** — Read when
+  modifying an existing site rather than building greenfield.
+  **`output-completeness.md`** — Read when the artifact has a countable
+  set of deliverables (decks, multi-screen prototypes, variant grids).
+  These four are the anti-slop taste layer (Leonxlnx/taste-skill, MIT);
+  the matching build recipes are `references/skills/taste-skill.md`,
+  `brandkit.md`, `image-to-code.md`, and `imagegen-frontend.md`.
 - **`references/design-systems/<vibe>.md`** — Read when the user has no
   brand to anchor on. 27 representative systems (brand-grade like apple /
   stripe / linear-app / vercel, plus aesthetic schools like brutalism /
@@ -360,7 +412,12 @@ When the user has no design system / brand / codebase to anchor on:
 For the full anti-AI-slop ruleset (the seven cardinal sins — default
 Tailwind indigo, two-stop trust gradients, emoji feature icons, sans
 display when seed binds serif, AI-dashboard left-border tile, invented
-metrics, lorem ipsum filler), read `references/craft/anti-ai-slop.md`.
+metrics, lorem ipsum filler), read `references/craft/anti-ai-slop.md`,
+and its taste extension `references/craft/anti-ai-slop-taste.md` for the
+production-test tells and the em-dash ban. The **em-dash ban** governs
+artifact output only (marketing / landing / portfolio copy), not this
+skill's own docs or your replies; sustained long-form editorial prose is
+the narrow exception.
 
 ## Project artifacts persist across sessions
 

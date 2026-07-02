@@ -45,13 +45,43 @@ This bundled skill ships content adapted from several upstream sources:
    game UIs. Drives gameuidatabase.com (Edd Coates' archive); the site
    itself is third-party and not redistributed here.
 
+5. taste-skill (https://github.com/Leonxlnx/taste-skill) — an MIT-licensed
+   (© 2026 Leonxlnx) anti-slop frontend framework. We adapt (not verbatim
+   vendor — rewritten to this skill's HTML-artifact workflow and house
+   style) an anti-slop TASTE LAYER. These files are skill-local, NOT
+   produced by scripts/vendor.ts from Open Design; the script snapshots
+   them before its wipe and restores them after, and folds the recipes
+   into the generated references/skills/_INDEX.md:
+
+   - references/craft/taste-dials.md — the Design Read (brief inference),
+     the three dials (DESIGN_VARIANCE / MOTION_INTENSITY / VISUAL_DENSITY),
+     and anti-default discipline (taste-skill SKILL.md §0, §1, §7).
+   - references/craft/redesign-audit.md — audit-first redesign protocol +
+     concrete fix catalog (taste-skill redesign skill + §11).
+   - references/craft/output-completeness.md — anti-truncation enforcement
+     + its laziness-research basis (taste-skill full-output-enforcement).
+   - references/craft/anti-ai-slop-taste.md — the extended slop-tell
+     catalog and the em-dash ban (taste-skill §4, §9).
+   - references/skills/taste-skill.md — the flagship taste recipe.
+   - references/skills/brandkit.md, image-to-code.md, imagegen-frontend.md
+     — brand / image-direction recipes (taste-skill brandkit,
+     image-to-code, imagegen-frontend-web|mobile).
+
+   Note: references/skills/imagegen-frontend.md is this taste-layer recipe
+   and is distinct from the Open Design skill named "imagegen", which is
+   excluded from the upstream vendor (see the exclusion set in vendor.ts).
+
 License: Apache 2.0 (Open Design and design.md). The Claude Design master
 prompt is adapted under fair use for interoperability and rewritten to
-refer to Claude Code's native tools.
+refer to Claude Code's native tools. The taste layer (source 5) is used
+under the MIT License (© 2026 Leonxlnx); the copyright and permission
+notice are retained below.
 
 Vendor sources: https://github.com/nexu-io/open-design and
 https://github.com/google-labs-code/design.md
-Last re-vendored with scripts/vendor.ts (standalone re-vendor script).
+Taste-layer source: https://github.com/Leonxlnx/taste-skill
+Last re-vendored with scripts/vendor.ts (standalone re-vendor script,
+which preserves the taste layer across the wipe).
 
 ============================================================================
 
@@ -77,3 +107,27 @@ Copyright notice for vendored Open Design content:
 
 Copyright 2026 nexu-io contributors and the Open Design community.
 Licensed under the Apache License, Version 2.0.
+
+============================================================================
+
+MIT License (taste layer — source 5, adapted files listed above)
+
+Copyright (c) 2026 Leonxlnx
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
